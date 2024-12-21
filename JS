@@ -1,0 +1,30 @@
+const fs = require("fs"); // ייבוא מודול מערכת הקבצים
+const path = require("path"); // ייבוא מודול לניהול נתיבים
+
+// הגדרת נתיב לתיקיית הטקסט
+const dirPath = path.join(__dirname, "/EX3"); // מרכיב את המסלול לתיקיית הטקסט
+
+// יצירת מערך שמות קבצים (1.txt עד 10.txt)
+const file_name_arr = Array.from(
+  { length: 10 },
+  (_, index) => `${index + 1}.txt`
+);
+
+// מערך לאחסון כל השורות מהקבצים
+let allLines = [];
+
+// קריאת הקבצים וצירוף השורות
+file_name_arr.forEach((fileName, i) => {
+  const textIn = fs.readFileSync(path.join(dirPath, fileName), "utf-8");
+  const lines = textIn.split("\r\n");
+
+  // הוספת השורות בהתאם לאינדקס הקובץ
+  allLines.push(...lines.slice(0, i + 1));
+});
+
+// כתיבת כל השורות לקובץ output.txt
+fs.writeFileSync(
+  path.join(dirPath, "output.txt"),
+  allLines.join("\n"),
+  "utf-8"
+);
